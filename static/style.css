@@ -1,0 +1,25 @@
+*
+{
+    padding: 0;
+    margin: 0;
+}
+
+main
+{
+    text-align: center;
+    padding: 3%;
+
+    button
+    {
+       margin: 0 5%; 
+       padding: 5px 10px;
+    }
+}
+
+
+#container
+{
+    width: 30%;
+    margin: 3% auto;
+    outline: 1px solid red;
+}

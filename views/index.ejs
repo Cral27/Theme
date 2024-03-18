@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+        <link rel="stylesheet" href="style.css">
+        <script>
+            $(document).ready(function(){
+                const socket = io();
+
+                $('#light').on('click', () => {
+                    socket.emit('beta', {color: 'white'});
+                })
+
+                $('#random').on('click', () => {
+                    const rgb = ['a','b','c','d','e','f','0','1','2','3','4','5','6','7','8','9'];
+                    let color = '#'  //this is what we'll return!
+                    for(let i = 0; i < 6; i++)   // 6 is total number of characters in hex
+                    {
+                        let x = Math.floor((Math.random()*16));  // 16 for hex
+                        color += rgb[x]; 
+                    }
+                    socket.emit('beta', {color: color});
+                })
+
+                $('#dark').on('click', () => {
+                    socket.emit('beta', {color: 'black'});
+                })
+
+                socket.on('updateColor', (data) => {
+                    if(data.color == 'black'){
+                        reset();
+                        $('body').css('background', data.color);
+                        $('#dark').css('background', 'black');
+                        $('#dark').css('color', 'white');
+                        $('#dark').css('border', '1px solid white');
+                    }else if(data.color == 'white'){
+                        reset();
+                        $('body').css('background', data.color);
+                        $('#light').css('background', 'yellow');
+                    }else{
+                        reset();
+                        $('#random').css('background', data.color);
+                        $('body').css('background', data.color);
+                    }
+                    
+                    function reset(){
+                        $('button').css('background', 'white');
+                        $('button').css('color', 'black');
+                        $('button').css('border', '1px solid black');
+                    }
+                })
+            });
+        </script>
+    </head>
+    <body>
+        <main>
+            <button id="light">Light Mode</button>
+            <button id="random">Random Mode</button>
+            <button id="dark">Dark Mode</button>
+        </main>
+    </body>
+</html>
